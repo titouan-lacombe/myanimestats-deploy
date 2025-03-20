@@ -12,30 +12,36 @@ APP_DOMAIN := myanimestats${SEPARATOR}${DOMAIN}
 
 export
 
+APP=app
 COMPOSE=docker compose
 
 default: up
 
 mkdata:
-	@mkdir -p data data
+	@mkdir -p data
 
-build:
-	@$(COMPOSE) build
+deps: mkdata
 
-up: mkdata
+clean:
+	@sudo rm -r data
+
+up: deps
 	@$(COMPOSE) up -d
 
-rebuild: mkdata
-	@$(COMPOSE) up -d --build
+pullup: deps
+	@$(COMPOSE) up -d --pull always
 
-recreate: mkdata
+recreate: deps
 	@$(COMPOSE) up -d --force-recreate
 
-down:
-	@$(COMPOSE) down  --remove-orphans
+restart: deps
+	@$(COMPOSE) restart $(APP)
 
-restart:
-	@$(COMPOSE) restart
+down: deps
+	@$(COMPOSE) down
+
+config:
+	@$(COMPOSE) config
 
 ps:
 	@$(COMPOSE) ps
@@ -44,7 +50,10 @@ stats:
 	@$(COMPOSE) stats
 
 logs:
-	@$(COMPOSE) logs app -f --tail=100
+	@$(COMPOSE) logs -f --tail=100 $(APP)
 
 attach:
-	@$(COMPOSE) exec app bash
+	@${COMPOSE} exec $(APP) bash
+
+attach-root:
+	@${COMPOSE} exec --user root $(APP) bash

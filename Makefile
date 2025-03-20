@@ -7,8 +7,7 @@ PUID=$(shell id -u)
 PGID=$(shell id -g)
 
 SEPARATOR := $(shell bash -c 'if [[ "${DOMAIN}" == *.*.* ]]; then echo "-"; else echo "."; fi')
-# APP_DOMAIN := $(shell if [ "${ENV}" = "pro" ]; then echo ${DOMAIN}; else echo ${ENV}${SEPARATOR}${DOMAIN}; fi)
-APP_DOMAIN := myanimestats${SEPARATOR}${DOMAIN}
+APP_DOMAIN := $(shell if [ "${ENV}" = "pro" ]; then echo myanimestats${SEPARATOR}${DOMAIN}; else echo myanimestats-${ENV}${SEPARATOR}${DOMAIN}; fi)
 
 export
 

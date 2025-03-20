@@ -20,3 +20,4 @@ services:
       - traefik.http.routers.myanimestats-$ENV.rule=Host(`$APP_DOMAIN`)
       - traefik.http.routers.myanimestats-$ENV.entrypoints=websecure
       - traefik.http.routers.myanimestats-$ENV.tls=true
+      - traefik.http.middlewares.myanimestats-$ENV.headers.hostsProxyHeaders=X-CSRFToken

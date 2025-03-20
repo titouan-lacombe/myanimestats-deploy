@@ -12,6 +12,8 @@ services:
       # ALLOW_IMPORT: "true"
     volumes:
       - ./data:/app/data
+    networks:
+      - web-gateway
     labels:
       - traefik.enable=true
       - traefik.http.services.myanimestats-$ENV.loadbalancer.server.port=8000
@@ -20,4 +22,7 @@ services:
       - traefik.http.routers.myanimestats-$ENV.rule=Host(`$APP_DOMAIN`)
       - traefik.http.routers.myanimestats-$ENV.entrypoints=websecure
       - traefik.http.routers.myanimestats-$ENV.tls=true
-      - traefik.http.middlewares.myanimestats-$ENV.headers.hostsProxyHeaders=X-CSRFToken
+
+networks:
+  web-gateway:
+    external: true

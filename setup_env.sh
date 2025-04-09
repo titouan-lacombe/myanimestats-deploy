@@ -28,7 +28,7 @@ fi
 
 missing_vars=()
 for key in "${!default_env[@]}"; do
-    if [[ -z "${env[$key]}" ]]; then
+    if [[ -z "${env[$key]+isset}" ]]; then
         missing_vars+=("$key")
     fi
 done

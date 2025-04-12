@@ -2,7 +2,7 @@ name: myanimestats-deploy
 
 services:
   app:
-    image: ghcr.io/titouan-lacombe/myanimestats:latest
+    image: ghcr.io/titouan-lacombe/myanimestats:main
     restart: always
     environment:
       TZ: Europe/Paris

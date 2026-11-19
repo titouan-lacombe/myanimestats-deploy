@@ -8,7 +8,7 @@ x-logging: &default-logging
 
 services:
   app:
-    image: ghcr.io/titouan-lacombe/myanimestats:20261119
+    image: ghcr.io/titouan-lacombe/myanimestats:20261119b
     restart: always
     mem_limit: 768m
     logging: *default-logging

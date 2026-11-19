@@ -1,15 +1,22 @@
 name: myanimestats-deploy
 
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   app:
-    image: ghcr.io/titouan-lacombe/myanimestats:1.0.0
+    image: ghcr.io/titouan-lacombe/myanimestats:20261119
     restart: always
+    mem_limit: 768m
+    logging: *default-logging
     environment:
       TZ: Europe/Paris
       PUID: $PUID
       PGID: $PGID
       LOG_LEVEL: DEBUG
-      # ALLOW_IMPORT: "true"
     volumes:
       - ./data:/app/data
     networks:
@@ -22,6 +29,16 @@ services:
       - traefik.http.routers.myanimestats-$ENV.rule=Host(`$APP_DOMAIN`)
       - traefik.http.routers.myanimestats-$ENV.entrypoints=websecure
       - traefik.http.routers.myanimestats-$ENV.tls=true
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          python -c "import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:8000/healthz/', timeout=5)"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
 networks:
   web-gateway:
